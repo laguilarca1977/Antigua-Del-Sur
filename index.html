@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Antigua Del Sur - CDMX</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #fffaf5; color: #222; scroll-behavior: smooth; }
+    :root {
+      --primary: #d94f4f;
+      --dark: #a83232;
+      --white: #fff;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background: var(--primary);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      font-weight: 800;
+      font-size: 1.7rem;
+      z-index: 1001;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    nav.desktop {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav.desktop a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: .2s;
+    }
+    nav.desktop a:hover,
+    nav.desktop a:focus-visible {
+      background: var(--dark);
+      outline: none;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background: var(--white);
+      border-radius: 2px;
+    }
+
+    .carousel-container {
+      margin-top: 80px;
+      padding: 1rem;
+    }
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 1rem;
+      flex-wrap: nowrap;
+    }
+    .carousel img {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      scroll-snap-align: center;
+      flex-shrink: 0;
+    }
+
+    .promo-image {
+      margin: 2rem auto;
+      display: flex;
+      justify-content: center;
+      padding: 0 1rem;
+    }
+    .promo-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 18px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    main {
+      max-width: 960px;
+      margin: 2rem auto 5rem;
+      padding: 0 1.5rem;
+    }
+    section {
+      margin-bottom: 4rem;
+    }
+    section h2 {
+      font-size: 2.6rem;
+      color: var(--primary);
+      margin-bottom: 1.4rem;
+      font-weight: 900;
+      border-bottom: 4px solid var(--primary);
+      padding-bottom: 0.4rem;
+    }
+    section p {
+      font-size: 1.2rem;
+      color: #444;
+      line-height: 1.7;
+    }
+    .contact-info a {
+      color: var(--dark);
+      font-weight: 700;
+      font-size: 1.25rem;
+      text-decoration: none;
+    }
+    .contact-info a:hover,
+    .contact-info a:focus-visible {
+      text-decoration: underline;
+    }
+    .qr img {
+      width: 200px;
+      height: 200px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: .3s;
+    }
+    .qr img:hover,
+    .qr img:focus-visible {
+      transform: scale(1.1);
+    }
+
+    footer {
+      background: var(--dark);
+      color: #fff;
+      text-align: center;
+      font-size: 1rem;
+      padding: 1.5rem;
+    }
+
+    html { scroll-padding-top: 70px; }
+
+    @media (max-width: 768px) {
+      header { font-size: 1.4rem; padding: 1rem; height: 55px; }
+      nav.desktop { display: none; }
+      .hamburger { display: flex; }
+
+      .carousel {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Antigua Del Sur
+    <nav class="desktop">
+      <a href="#inicio">Inicio</a>
+      <a href="#quienes">Quiénes somos</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#qr">Agregar contacto</a>
+    </nav>
+    <button class="hamburger" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
+      <div></div><div></div><div></div>
+    </button>
+  </header>
+
+  <nav id="mobile-menu" style="display:none; position:fixed; top:60px; left:0; right:0; background:var(--primary); z-index:1000; flex-direction:column; padding:1rem; gap:1rem; text-align:center;">
+    <a href="#inicio" style="color:#fff; font-weight:700; font-size:1.2rem;">Inicio</a>
+    <a href="#quienes" style="color:#fff; font-weight:700; font-size:1.2rem;">Quiénes somos</a>
+    <a href="#contacto" style="color:#fff; font-weight:700; font-size:1.2rem;">Contacto</a>
+    <a href="#qr" style="color:#fff; font-weight:700; font-size:1.2rem;">Agregar contacto</a>
+  </nav>
+
+  <div class="carousel-container" id="inicio">
+    <div class="carousel">
+      <img src="img/1.jpg" alt="Imagen 1">
+      <img src="img/2.jpg" alt="Imagen 2">
+      <img src="img/3.jpg" alt="Imagen 3">
+      <img src="img/4.jpg" alt="Imagen 4">
+    </div>
+  </div>
+
+  <main>
+	<section id="quienes" class="py-5" style="background-color: #fdf4ed;">
+	  <div class="container">
+		<div class="row align-items-center g-5">
+		  
+		  <!-- Texto -->
+		  <div class="col-md-6">
+			<h2 class="fw-bold display-5 text-danger-emphasis">💬 ¿Quiénes Somos?</h2>
+			<p class="lead mt-4 text-dark-emphasis">
+			  En <strong>Antigua Del Sur</strong> fusionamos la pasión por la comida tradicional con el encanto de lo moderno.  
+			  Somos un rincón gastronómico en la <strong>Ciudad de México</strong> donde cada platillo cuenta una historia de sabor, cultura y amor por lo bien hecho.
+			</p>
+			<p class="text-muted">
+			  Nuestra misión es simple: ofrecer <strong>calidad auténtica</strong>, ingredientes <strong>frescos</strong> y una experiencia que querrás repetir una y otra vez.
+			</p>
+			<p class="fw-semibold text-success-emphasis">✨ Sabores del sur con alma latina, listos para conquistar tu paladar.</p>
+		  </div>
+
+		  <!-- Imagen -->
+		  <div class="col-md-6 text-center">
+			<img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?fit=crop&w=600&q=80" 
+				 alt="Antigua Del Sur restaurante" 
+				 class="img-fluid rounded-4 shadow" style="max-height: 350px; object-fit: cover;">
+		  </div>
+
+		</div>
+	  </div>
+	</section>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<section class="container py-5" style="background-color: #fffbe6;">
+	  <h2 class="text-center mb-5 display-5 fw-bold text-danger-emphasis">🔥 Menú de Siempre</h2>
+	  <div class="row g-4">
+
+		<!-- Empanadas -->
+		<div class="col-md-6 col-lg-4">
+		  <div class="card shadow border-0 h-100">
+			<div class="card-body">
+			  <h5 class="card-title fw-bold">🥟 Empanadas Argentinas</h5>
+			  <p class="card-text">Carne, choclo, queso con tocino, jamón con queso, chistorra, dulce de la casa</p>
+			  <p><strong>$30</strong> c/u | <strong>$185</strong> (media docena) | <strong>$350</strong> (docena)</p>
+			</div>
+		  </div>
+		</div>
+
+		<!-- Choripán -->
+		<div class="col-md-6 col-lg-4">
+		  <div class="card shadow border-0 h-100">
+			<div class="card-body">
+			  <h5 class="card-title fw-bold">🌭 Choripán</h5>
+			  <p class="card-text">Tradicional: <strong>$85</strong><br>Pan de yuca: <strong>$105</strong></p>
+			</div>
+		  </div>
+		</div>
+
+		<!-- Cochinita -->
+		<div class="col-md-6 col-lg-4">
+		  <div class="card shadow border-0 h-100">
+			<div class="card-body">
+			  <h5 class="card-title fw-bold">🐖 Cochinita</h5>
+			  <p class="card-text">Torta: $75 | Sope / Taco: $30</p>
+			  <p>1/2 kg: <strong>$185</strong> | 1 kg: <strong>$350</strong></p>
+			</div>
+		  </div>
+		</div>
+
+		<!-- Salsas -->
+		<div class="col-md-6 col-lg-4">
+		  <div class="card shadow border-0 h-100">
+			<div class="card-body">
+			  <h5 class="card-title fw-bold">🌶️ Salsas Artesanales</h5>
+			  <p class="card-text">Cacahuate, árbol, habanera, tamarindo, mango, fresa, maracuyá, oliva, guayaba, matcha, chimichurri</p>
+			  <p>Frasco (225ml): <strong>$120</strong></p>
+			</div>
+		  </div>
+		</div>
+
+		<!-- Guarniciones -->
+		<div class="col-md-6 col-lg-4">
+		  <div class="card shadow border-0 h-100">
+			<div class="card-body">
+			  <h5 class="card-title fw-bold">🍽️ Guarniciones Extras</h5>
+			  <p>Frijoles refritos: <strong>$65</strong><br>Arroz: <strong>$65</strong></p>
+			</div>
+		  </div>
+		</div>
+
+		<!-- Bebidas sin alcohol -->
+		<div class="col-md-6 col-lg-4">
+		  <div class="card shadow border-0 h-100">
+			<div class="card-body">
+			  <h5 class="card-title fw-bold">🧃 Bebidas sin alcohol</h5>
+			  <p>Refrescos (600ml): <strong>$35</strong><br>Aguas frescas (500ml): <strong>$30</strong></p>
+			</div>
+		  </div>
+		</div>
+
+		<!-- Bebidas con alcohol -->
+		<div class="col-md-6 col-lg-6">
+		  <div class="card shadow border-0 h-100">
+			<div class="card-body">
+			  <h5 class="card-title fw-bold">🍻 Bebidas con alcohol</h5>
+			  <p>Cerveza: $30<br>Michelada (1 lt): $85<br>Calimocho / Tinto de verano (1 lt): $99<br>Clericó (2 lt): $189</p>
+			</div>
+		  </div>
+		</div>
+
+		<!-- Postres -->
+		<div class="col-md-6 col-lg-6">
+		  <div class="card shadow border-0 h-100">
+			<div class="card-body">
+			  <h5 class="card-title fw-bold">🍰 Postres</h5>
+			  <p>Pastel de elote: <strong>$45</strong><br>Alfajor (tradicional / limón): <strong>$75</strong></p>
+			</div>
+		  </div>
+		</div>
+
+	  </div>
+	</section>
+
+	<section class="container py-5" style="background-color: #fef9f0;">
+	  <h2 class="text-center mb-5 display-5 fw-bold text-success">🎉 Menú Especial para Eventos</h2>
+	  <div class="card shadow-lg border-0">
+		<div class="card-body">
+
+		  <h5 class="fw-bold">🍽️ Entradas</h5>
+		  <p>Crema de frijol, fetuccini a la crema con champiñones, codito con tocino, lasagna (cochinita, carne, vegetariana)</p>
+
+		  <h5 class="fw-bold">🥩 Platos Fuertes</h5>
+		  <p>
+			<strong>Lomo (5 kg):</strong> BBQ, finas hierbas, 3 chiles, pasilla<br>
+			<strong>Pechos (5 kg):</strong> Al pibil, BBQ, pasilla, 3 chiles, finas hierbas<br>
+			<strong>Chamorro (por pieza):</strong> En su jugo, 3 chiles, pibil, BBQ<br>
+			<strong>Cochinita / Bacalao (por kg)</strong><br>
+			<strong>Empanadas (12 piezas):</strong> carne, choclo, queso con tocino, jamón con queso, chistorra, dulce
+		  </p>
+
+		  <h5 class="fw-bold">🍟 Guarniciones</h5>
+		  <p>Puré de papa, papas cambray con chipotle, espinaca a la crema con tocino</p>
+
+		  <h5 class="fw-bold">🍎 Postres</h5>
+		  <p>Ensalada de manzana, ensalada de zanahoria con nuez, pastel de elote</p>
+
+		  <div class="mt-4 bg-warning-subtle p-3 rounded">
+			<p><strong>📌 Nota:</strong> Requiere 15 días de anticipación y 50% de anticipo.</p>
+			<p><strong>📞 ¡Platillos de temporada disponibles todo el año!</strong> Llámanos y agenda tu evento hoy.</p>
+		  </div>
+		</div>
+	  </div>
+	</section>
+
+
+	<section id="contacto" class="py-5 bg-light">
+	  <div class="container text-center">
+		<div class="card border-0 shadow-lg p-4 mx-auto" style="max-width: 600px;">
+		  <h2 class="fw-bold text-primary mb-3">📞 ¡Contáctanos Hoy!</h2>
+		  <p class="lead text-dark-emphasis">Haz tu pedido o cotiza tu evento, estamos para servirte.</p>
+
+		  <!-- Botón de llamada -->
+		  <a href="tel:+525544910133" class="btn btn-success btn-lg mb-3">
+			📲 Llamar al +52 55 4491 0133
+		  </a>
+
+		  <!-- Botón de WhatsApp -->
+		  <a href="https://wa.me/525544910133?text=Hola%20me%20interesa%20hacer%20un%20pedido%20en%20Antigua%20Del%20Sur" 
+			 class="btn btn-outline-success btn-lg mb-3" target="_blank">
+			💬 Escríbenos por WhatsApp
+		  </a>
+
+		  <!-- Redes sociales -->
+		  <div class="mt-4">
+			<p class="fw-semibold">Síguenos en redes:</p>
+			<a href="https://www.instagram.com/antiguadelsur" target="_blank" class="me-3 text-danger fs-4">
+			  <i class="bi bi-instagram"></i> Instagram
+			</a>
+			<a href="https://www.facebook.com/antiguadelsur" target="_blank" class="me-3 text-primary fs-4">
+			  <i class="bi bi-facebook"></i> Facebook
+			</a>
+			<a href="mailto:contacto@antiguadelsur.com" class="fs-5">
+			  📧 contacto@antiguadelsur.com
+			</a>
+		  </div>
+
+		  <!-- Horario -->
+		  <p class="text-muted mt-4">🕐 Horario: Lunes a Domingo | 12:00 PM – 10:00 PM</p>
+		</div>
+
+		<!-- Mapa de Google -->
+		<div class="mt-5">
+		  <iframe
+			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.230557303781!2d-99.134564!3d19.436112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3ed5d38f4b%3A0xf6c9f774b7fcb83d!2sCiudad%20de%20M%C3%A9xico!5e0!3m2!1ses!2smx!4v1721053720000!5m2!1ses!2smx"
+			width="100%" height="350" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"
+			referrerpolicy="no-referrer-when-downgrade"></iframe>
+		</div>
+	  </div>
+	</section>
+
+
+	<section id="qr" class="py-5" >
+	  <div class="container text-center">
+		<div class="card shadow-lg border-0 mx-auto" style="max-width: 400px;">
+		  <div class="card-body">
+			<p class="card-text">Escanea el código para aplicar a nuestras promociones:</p>
+			<img 
+			  src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3AAntigua%20Del%20Sur%0ATEL%3BTYPE%3DCELL%3A%2B525544910133%0AEND%3AVCARD" 
+			  alt="QR para agregar contacto Antigua Del Sur"
+			  class="img-fluid my-3"
+			  style="width: 200px; height: 200px;">
+		  </div>
+		</div>
+	  </div>
+	</section>
+
+  </main>
+
+  <footer>
+    &copy; 2025 Antigua Del Sur -LEAC
+  </footer>
+
+  <script>
+    const btn = document.getElementById('hamburgerBtn');
+    const menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', () => {
+      const exp = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!exp));
+      menu.style.display = exp ? 'none' : 'flex';
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      menu.style.display = 'none';
+      btn.setAttribute('aria-expanded', 'false');
+    }));
+  </script>
+</body>
+</html>
