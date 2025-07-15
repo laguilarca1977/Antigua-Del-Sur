@@ -407,8 +407,9 @@
 
   </main>
 
+
   <footer>
-    &copy; 2025 Antigua Del Sur -LEAC
+    &copy; 2025 Antigua Del Sur
   </footer>
 
   <script>
@@ -424,5 +425,26 @@
       btn.setAttribute('aria-expanded', 'false');
     }));
   </script>
+  
+  <div id="promo-float" style="position: absolute; right: 20px; top: 300px; z-index: 9999;">
+  <div style="position: relative;">
+    <img src="img/6.jpg" alt="Promo especial"
+         style="width: 380px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+    <div style="position: absolute; bottom: 10px; left: 0; right: 0; text-align: center; color: white; font-weight: bold; font-size: 1rem; text-shadow: 1px 1px 4px black;">
+      ¡Julio, agosto y septiembre!
+    </div>
+  </div>
+</div>
+
+<script>
+  const promoFloat = document.getElementById('promo-float');
+  let lastScroll = window.scrollY;
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY + 300; // ajusta si quieres que suba/baje más
+    promoFloat.style.top = scrollTop + 'px';
+  });
+</script>
+
 </body>
 </html>
