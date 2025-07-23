@@ -433,12 +433,20 @@
     top: 300px;
     z-index: 9999;
     transition: top 0.4s ease-in-out;
+    cursor: pointer;
+    display: block;
   }
 
   #promo-float img {
-    width: 340px;
+    width: 180px;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  }
+
+  #promo-float.expanded img {
+    transform: scale(2);
+    z-index: 10000;
   }
 
   #promo-float .promo-text {
@@ -449,17 +457,32 @@
     text-align: center;
     color: white;
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     text-shadow: 2px 2px 6px black;
+    pointer-events: none;
   }
 
+  /* ✅ Responsive para celulares y tablets */
   @media (max-width: 768px) {
+    #promo-float {
+      position: fixed !important;
+      top: auto !important;
+      bottom: 10px !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%);
+    }
+
     #promo-float img {
-      width: 200px; /* versión más pequeña para tablet y celular */
+      width: 140px;
+    }
+
+    #promo-float.expanded img {
+      transform: scale(2.2);
     }
 
     #promo-float .promo-text {
-      font-size: 1rem; /* texto más compacto */
+      font-size: 0.9rem;
     }
   }
 </style>
@@ -467,19 +490,45 @@
 <div id="promo-float">
   <div style="position: relative;">
     <img src="img/6.jpg" alt="Promo especial">
-    <div class="promo-text">
-      ¡Julio, agosto y septiembre!
-    </div>
+    <div class="promo-text">¡Julio, agosto y septiembre!</div>
   </div>
 </div>
 
 <script>
   const promoFloat = document.getElementById('promo-float');
 
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY + 300;
-    promoFloat.style.top = scrollY + 'px';
+  function updateFloatPosition() {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (!isMobile) {
+      // Desktop: posicionamiento flotante que sigue el scroll
+      const scrollY = window.scrollY + 300;
+      promoFloat.style.position = 'absolute';
+      promoFloat.style.top = scrollY + 'px';
+      promoFloat.style.right = '20px';
+      promoFloat.style.left = 'auto';
+      promoFloat.style.bottom = 'auto';
+      promoFloat.style.transform = 'none';
+    } else {
+      // Mobile: se reposiciona abajo centrado
+      promoFloat.style.position = 'fixed';
+      promoFloat.style.top = 'auto';
+      promoFloat.style.bottom = '10px';
+      promoFloat.style.left = '50%';
+      promoFloat.style.right = 'auto';
+      promoFloat.style.transform = 'translateX(-50%)';
+    }
+  }
+
+  // Ampliar imagen al clic
+  promoFloat.addEventListener('click', () => {
+    promoFloat.classList.toggle('expanded');
   });
+
+  // Recalcular siempre que se cambie tamaño o haga scroll
+  window.addEventListener('scroll', updateFloatPosition);
+  window.addEventListener('resize', updateFloatPosition);
+  window.addEventListener('load', updateFloatPosition);
 </script>
 
 
