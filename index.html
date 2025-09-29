@@ -379,18 +379,32 @@
 		  <p class="text-muted mt-4">🕐 Horario: Lunes a Domingo | 12:00 PM – 10:00 PM</p>
 		</div>
 
-		<!-- Mapa de Google -->
-		<div class="mt-5">
-<iframe
-  src="https://www.google.com/maps?q=Insurgentes+Sur+3493+Edif+9+depto+103+Ciudad+de+México&hl=es&z=18&output=embed"
-  width="100%"
-  height="400"
-  style="border:0; border-radius:12px;"
-  allowfullscreen=""
-  loading="lazy"
-  referrerpolicy="no-referrer-when-downgrade">
-</iframe>
-	  </div>
+
+<div class="mt-5">
+  <!-- Mapa de Google -->
+  <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
+    <!-- Dirección -->
+    <div style="padding: 16px; background-color: #f5f5f5; border-radius: 12px 12px 0 0; text-align: center;">
+      <h2 style="margin: 0; font-size: 18px; color: #333;">Antigua Del Sur</h2>
+      <p style="margin: 4px 0 0 0; font-size: 14px; color: #555;">
+        Insurgentes Sur 3493<br>
+        Ciudad de México
+      </p>
+    </div>
+
+    <!-- Mapa -->
+    <iframe
+      src="https://www.google.com/maps?q=Insurgentes+Sur+3493+Ciudad+de+México&hl=es&z=18&output=embed"
+      width="100%"
+      height="400"
+      style="border:0; border-radius:0 0 12px 12px;"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</div>
+
 	</section>
 
 
@@ -499,40 +513,44 @@
 </div>
 
 <script>
-  const promoFloat = document.getElementById('promo-float');
+const promoFloat = document.getElementById('promo-float');
 
-  function updateFloatPosition() {
-    const isMobile = window.innerWidth <= 768;
-    
-    if (!isMobile) {
-      // Desktop: posicionamiento flotante que sigue el scroll
-      const scrollY = window.scrollY + 300;
-      promoFloat.style.position = 'absolute';
-      promoFloat.style.top = scrollY + 'px';
-      promoFloat.style.right = '20px';
-      promoFloat.style.left = 'auto';
-      promoFloat.style.bottom = 'auto';
-      promoFloat.style.transform = 'none';
-    } else {
-      // Mobile: se reposiciona abajo centrado
-      promoFloat.style.position = 'fixed';
-      promoFloat.style.top = 'auto';
-      promoFloat.style.bottom = '10px';
-      promoFloat.style.left = '50%';
-      promoFloat.style.right = 'auto';
-      promoFloat.style.transform = 'translateX(-50%)';
-    }
+function updateFloatPosition() {
+  const isMobile = window.innerWidth <= 768;
+
+  if (!isMobile) {
+    // Desktop: flotante que sigue scroll pero más hacia la izquierda
+    const scrollY = window.scrollY + 200; // offset más arriba
+    const maxY = document.body.scrollHeight - promoFloat.offsetHeight - 20; // evita que sobrepase footer
+    promoFloat.style.position = 'absolute';
+    promoFloat.style.top = Math.min(scrollY, maxY) + 'px';
+    promoFloat.style.right = '160px'; // +20% aprox (antes 80px)
+    promoFloat.style.left = 'auto';
+    promoFloat.style.bottom = 'auto';
+    promoFloat.style.transform = 'none';
+  } else {
+    // Mobile: abajo centrado pero más hacia la izquierda, responsive
+    promoFloat.style.position = 'fixed';
+    promoFloat.style.bottom = '10px';
+    promoFloat.style.left = '20%'; // un 20% más a la izquierda
+    promoFloat.style.right = 'auto';
+    promoFloat.style.top = 'auto';
+    promoFloat.style.transform = 'translateX(-50%)'; // mantiene centrado relativo
+    promoFloat.style.maxWidth = '90%';
+    promoFloat.style.boxSizing = 'border-box';
   }
+}
 
-  // Ampliar imagen al clic
-  promoFloat.addEventListener('click', () => {
-    promoFloat.classList.toggle('expanded');
-  });
+// Ampliar imagen al clic
+promoFloat.addEventListener('click', () => {
+  promoFloat.classList.toggle('expanded');
+});
 
-  // Recalcular siempre que se cambie tamaño o haga scroll
-  window.addEventListener('scroll', updateFloatPosition);
-  window.addEventListener('resize', updateFloatPosition);
-  window.addEventListener('load', updateFloatPosition);
+// Recalcular siempre que se cambie tamaño o haga scroll
+window.addEventListener('scroll', updateFloatPosition);
+window.addEventListener('resize', updateFloatPosition);
+window.addEventListener('load', updateFloatPosition);
+
 </script>
 
 
