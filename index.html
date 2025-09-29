@@ -516,26 +516,43 @@
 const promoFloat = document.getElementById('promo-float');
 
 function updateFloatPosition() {
-  const isMobile = window.innerWidth <= 768;
+  const windowWidth = window.innerWidth;
+  const scrollY = window.scrollY;
+  const promoHeight = promoFloat.offsetHeight;
+  const bodyHeight = document.body.scrollHeight;
+  const footerOffset = 120; // ⚡ distancia mínima respecto al footer (ajústala si quieres más)
 
-  if (!isMobile) {
-    // Desktop: flotante que sigue scroll pero más hacia la izquierda
-    const scrollY = window.scrollY + 200; // offset más arriba
-    const maxY = document.body.scrollHeight - promoFloat.offsetHeight - 20; // evita que sobrepase footer
+  if (windowWidth > 768) {
+    // Desktop / Tablet
+    let topPosition = scrollY + 200; // un poco más arriba
+    const maxY = bodyHeight - promoHeight - footerOffset; // nunca sobrepasa el footer
     promoFloat.style.position = 'absolute';
-    promoFloat.style.top = Math.min(scrollY, maxY) + 'px';
-    promoFloat.style.right = '160px'; // +20% aprox (antes 80px)
+    promoFloat.style.top = Math.min(topPosition, maxY) + 'px';
+    promoFloat.style.right = '60px'; // desplazado hacia la derecha
     promoFloat.style.left = 'auto';
     promoFloat.style.bottom = 'auto';
     promoFloat.style.transform = 'none';
   } else {
-    // Mobile: abajo centrado pero más hacia la izquierda, responsive
+    // Mobile: fijo, más arriba del footer
     promoFloat.style.position = 'fixed';
-    promoFloat.style.bottom = '10px';
-    promoFloat.style.left = '20%'; // un 20% más a la izquierda
+
+    // Altura disponible hasta el footer
+    const maxVisibleY = bodyHeight - footerOffset - promoHeight;
+    const currentBottom = 80; // margen fijo arriba del borde inferior
+    let bottomPosition = currentBottom;
+
+    // Si el scroll llega al final, mantenemos el flotante arriba del footer
+    if (scrollY + window.innerHeight > maxVisibleY) {
+      bottomPosition = (scrollY + window.innerHeight) - maxVisibleY + currentBottom;
+    }
+
+    promoFloat.style.bottom = bottomPosition + 'px';
+
+    // Ligeramente a la derecha (viéndolo de frente)
+    promoFloat.style.left = '55%';
     promoFloat.style.right = 'auto';
     promoFloat.style.top = 'auto';
-    promoFloat.style.transform = 'translateX(-50%)'; // mantiene centrado relativo
+    promoFloat.style.transform = 'translateX(-50%)';
     promoFloat.style.maxWidth = '90%';
     promoFloat.style.boxSizing = 'border-box';
   }
@@ -546,7 +563,7 @@ promoFloat.addEventListener('click', () => {
   promoFloat.classList.toggle('expanded');
 });
 
-// Recalcular siempre que se cambie tamaño o haga scroll
+// Recalcular posición al scroll, resize o load
 window.addEventListener('scroll', updateFloatPosition);
 window.addEventListener('resize', updateFloatPosition);
 window.addEventListener('load', updateFloatPosition);
