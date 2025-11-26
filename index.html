@@ -330,54 +330,157 @@
 </style>
 
 
-	<!-- NUEVO MENÚ DE NOVIEMBRE Y DICIEMBRE -->
-	<section class="container py-5" style="background-color: #fef9f0;">
-	  <h2 class="text-center mb-5 display-5 fw-bold text-success">🎄 Menú de Noviembre y Diciembre</h2>
-	  <div class="card shadow-lg border-0">
-		<div class="card-body">
+	<style>
+  .menu-navidad {
+    background: linear-gradient(180deg, #fef9f0, #fff);
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+  }
 
-		  <h5 class="fw-bold">🐟 Bacalao</h5>
-		  <p>Tradicional, preparado con ingredientes frescos y sabor casero.</p>
+  .menu-navidad h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #1d8f4b;
+    text-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  }
 
-		  <h5 class="fw-bold">🥩 Lomo</h5>
-		  <p>3 chiles, chipotle a la crema con champiñones o al tamarindo con pasilla.</p>
+  .menu-navidad h3 {
+    margin-top: 40px;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #b30000;
+    border-left: 8px solid #d62828;
+    padding-left: 12px;
+  }
 
-		  <h5 class="fw-bold">🍗 Pechos</h5>
-		  <p>BBQ, pasilla, 3 chiles o a las hierbas finas.</p>
+  .menu-navidad ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 20px;
+  }
 
-		  <h5 class="fw-bold">🍝 Lasagna</h5>
-		  <p>Carne, cochinita pibil o vegetariana.</p>
+  .menu-navidad ul li {
+    background: #ffffffd8;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    border-radius: 14px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #333;
+    border: 1px solid #f1e1d1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-		  <h5 class="fw-bold">🍗 Pechuga Empanizada</h5>
-		  <p>En trozo poblana, BBQ o chipotle a la crema.</p>
+  .menu-navidad ul li:hover {
+    background: #fff7e6;
+    transform: translateX(6px);
+    transition: 0.2s;
+  }
 
-		  <h5 class="fw-bold">🐖 Cochinita Pibil</h5>
-		  <p>Receta tradicional con sabor del sur, lista para tus eventos.</p>
+  /* Íconos */
+  .icon {
+    font-size: 1.4rem;
+  }
 
-		  <h5 class="fw-bold">🍖 Chamorros</h5>
-		  <p>Al pibil o 3 chiles.</p>
+  .platillos { color: #c1121f; }
+  .pastas { color: #8b5cf6; }
+  .guarn { color: #ff8800; }
+  .postres { color: #dc0073; }
+  .bebidas { color: #1e88e5; }
 
-		  <h5 class="fw-bold">🍜 Pastas y Cremas</h5>
-		  <p>Pasta bolognesa, pasta con jitomate, pimiento y queso parmesano.  
-			 Crema de papa o crema de frijol con tocino.</p>
+  /* Decoración navideña */
+  .navidad-deco {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 180px;
+    opacity: 0.9;
+  }
 
-		  <h5 class="fw-bold">🍟 Guarniciones</h5>
-		  <p>Papas cambray con chipotle a la crema, puré de papa con tocino o frijoles charros.</p>
+  .navidad-bolas {
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 160px;
+    opacity: 0.9;
+  }
 
-		  <h5 class="fw-bold">🍎 Postres</h5>
-		  <p>Ensalada de manzana y durazno con nuez, ensalada de zanahoria con pasitas o pan de elote individual.</p>
+  .nota-navidad {
+    margin-top: 40px;
+    background: #fff3cd;
+    padding: 20px;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    border-left: 6px solid #f0ad4e;
+  }
+</style>
 
-		  <h5 class="fw-bold">🍷 Bebidas por litro</h5>
-		  <p>Calimocho o tinto de verano.</p>
+<section class="menu-navidad container py-5">
 
-		  <div class="mt-4 bg-warning-subtle p-3 rounded">
-			<p><strong>📌 Nota:</strong> Pedidos con 7 días de anticipación y anticipo del 50% del total.</p>
-			<p><strong>✨ Disponible solo durante noviembre y diciembre.</strong></p>
-		  </div>
+  <img src="img/7.jpg" class="navidad-deco">
+  <img src="img/8.jpg" class="navidad-bolas">
 
-		</div>
-	  </div>
-	</section>
+  <h2 class="text-center mb-5">🎄 Menú de Noviembre y Diciembre</h2>
+
+  <!-- PLATILLOS -->
+  <h3>🍽️ Platillo Principal</h3>
+  <ul>
+    <li><span class="icon platillos">🐟</span> <strong>1 kg Bacalao</strong> – $999</li>
+    <li><span class="icon platillos">🥩</span> <strong>Lomo 3 chiles a la crema con chipotle y champiñones o al tamarindo con pasilla (5 kg)</strong> – $2100</li>
+    <li><span class="icon platillos">🍖</span> <strong>Pechos de puerco al BBQ, pasilla, pibil o 3 chiles (5 kg)</strong> – $2200</li>
+    <li><span class="icon platillos">🍝</span> <strong>Lasaña vegetariana, al pibil o carne (8 personas)</strong> – $1200</li>
+    <li><span class="icon platillos">🍗</span> <strong>Pechugas en trozo empanizado con tocino al BBQ o a la poblana con elote (6 piezas)</strong> – $680</li>
+    <li><span class="icon platillos">🔥</span> <strong>1.3 kg Picaña a las hierbas y un toque dulce</strong> – $1100</li>
+    <li><span class="icon platillos">🐖</span> <strong>1 kg Cochinita Pibil</strong> (incluye tortillas, cebolla morada y salsa de habanero) – $370</li>
+    <li><span class="icon platillos">🥟</span> <strong>Empanadas Argentinas (12 piezas)</strong>: carne, choclo, tocino, queso, cochinita y dulce a la antigua (incluye chimichurri y salsa habanero) – $380</li>
+  </ul>
+
+  <!-- PASTAS -->
+  <h3>🍝 Pastas y Cremas</h3>
+  <ul>
+    <li><span class="icon pastas">🥣</span> <strong>1 L Crema papa al chipotle</strong> – $150</li>
+    <li><span class="icon pastas">🥣</span> <strong>1 L Crema frijol con tocino</strong> – $150</li>
+    <li><span class="icon pastas">🍝</span> <strong>1 kg Pasta a la Philadelphia con champiñones</strong> – $165</li>
+    <li><span class="icon pastas">🍝</span> <strong>1 kg Pasta a la Bolognesa</strong> – $185</li>
+    <li><span class="icon pastas">🍝</span> <strong>1 kg Pasta a la Marinara con morrón y parmesano</strong> – $165</li>
+  </ul>
+
+  <!-- GUARNICIONES -->
+  <h3>🍟 Guarniciones</h3>
+  <ul>
+    <li><span class="icon guarn">🥔</span> <strong>1 kg Papas cambray a la crema con chipotle</strong> – $165</li>
+    <li><span class="icon guarn">🥗</span> <strong>Charola de ensalada mixta con nuez y frutos rojos y queso panela con aderezo miel y mostaza (6 personas)</strong> – $750</li>
+    <li><span class="icon guarn">🌶️</span> <strong>1 L Frijoles charros</strong> – $165</li>
+  </ul>
+
+  <!-- POSTRES -->
+  <h3>🍰 Postres</h3>
+  <ul>
+    <li><span class="icon postres">🍎</span> <strong>Charola de ensalada de manzana con nuez castilla y durazno (6 personas)</strong> – $720</li>
+    <li><span class="icon postres">🥕</span> <strong>Charola de ensalada de zanahoria con pasitas y durazno a la crema (6 personas)</strong> – $650</li>
+  </ul>
+
+  <!-- BEBIDAS -->
+  <h3>🍷 Bebidas</h3>
+  <ul>
+    <li><span class="icon bebidas">🍷</span> <strong>1 L Calimocho</strong> – $120</li>
+    <li><span class="icon bebidas">🍷</span> <strong>1 L Tinto de verano</strong> – $120</li>
+    <li><span class="icon bebidas">🍹</span> <strong>Jarra Clericot (3 L)</strong> – $650</li>
+  </ul>
+
+  <!-- NOTA -->
+  <div class="nota-navidad">
+    <strong>📌 Nota:</strong> Todos los pedidos requieren <strong>7 días de anticipación</strong>.
+  </div>
+
+</section>
+
 
 	<section id="contacto" class="py-5 bg-light">
 	  <div class="container text-center">
