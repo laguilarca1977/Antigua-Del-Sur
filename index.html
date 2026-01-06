@@ -108,6 +108,29 @@ html, body {
     zoom: 0.85; /* En móviles no conviene bajar al 70% porque la letra queda minúscula */
   }
 }
+
+/* ARREGLO PARA EL MENÚ AMONTONADO EN MÓVILES */
+@media (max-width: 768px) {
+  header {
+    height: auto !important; /* Que el alto crezca si es necesario */
+    flex-direction: column;  /* Nombre arriba, botones abajo */
+    padding: 10px 0 !important;
+    text-align: center;
+  }
+
+  nav.desktop {
+    display: flex;
+    justify-content: center;
+    gap: 10px;        /* Espacio entre botones */
+    margin-top: 5px;  /* Separación del nombre */
+    width: 100%;
+  }
+
+  nav.desktop a {
+    font-size: 0.85rem !important; /* Letra un poco más chica para que quepa en una línea */
+    padding: 5px 8px !important;
+  }
+}
   </style>
 </head>
 <body>
