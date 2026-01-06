@@ -1,715 +1,376 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Antigua Del Sur - CDMX</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; background: #fffaf5; color: #222; scroll-behavior: smooth; }
+    body { font-family: 'Poppins', sans-serif; background: #fffaf5; color: #222; scroll-behavior: smooth; overflow-x: hidden; }
+    
     :root {
       --primary: #d94f4f;
       --dark: #a83232;
       --white: #fff;
     }
 
+    /* HEADER PRO */
     header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 60px;
-      background: var(--primary);
-      color: var(--white);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-      font-weight: 800;
-      font-size: 1.7rem;
-      z-index: 1001;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+      position: fixed; top: 0; left: 0; right: 0; height: 60px;
+      background: var(--primary); color: var(--white);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; font-weight: 800; font-size: 1.7rem;
+      z-index: 2000; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    }
+    nav.desktop a { color: var(--white); text-decoration: none; font-size: 1rem; padding: 0.5rem 0.8rem; font-weight: 600; }
+
+    /* QUIÉNES SOMOS CHIC */
+    .quienes-section { margin-top: 80px; padding: 3rem 1rem; background-color: #fdf4ed; }
+    .img-quienes-chic { width: 100%; max-width: 400px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); object-fit: cover; }
+
+    /* CARRUSEL AUTOMÁTICO (Tamaño Pro) */
+    .carousel-container { max-width: 600px; margin: 2rem auto; }
+    .carousel-inner img { height: 400px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+    /* PAQUETES (FUERA DEL ACORDEÓN) */
+    .package-card {
+      background: #1a1a1a; color: #fff; border-radius: 15px; padding: 25px;
+      margin-bottom: 20px; border-left: 8px solid var(--primary);
+      display: flex; justify-content: space-between; align-items: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .package-card:hover { transform: scale(1.02); }
+    .price-tag { color: #ff4d4d; font-weight: 900; font-size: 1.6rem; }
+
+    /* ACORDEONES ESTILO MENÚ */
+    .accordion-button:not(.collapsed) { background-color: #fff1f1; color: var(--dark); }
+    .accordion-button { font-weight: 800; font-size: 1.4rem; padding: 1.5rem; }
+    
+    /* ESTILOS MENÚ NAVIDAD INTEGRAL */
+    .menu-navidad h3 { margin-top: 35px; color: #b30000; border-left: 8px solid #d62828; padding-left: 15px; font-weight: 800; }
+    .navidad-list { list-style: none; padding: 0; margin-top: 15px; }
+    .navidad-list li { 
+      background: #fff; padding: 15px 20px; margin-bottom: 12px; 
+      border-radius: 15px; border: 1px solid #f1e1d1; 
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
 
-    nav.desktop {
-      display: flex;
-      gap: 1.5rem;
+    /* --- IMAGEN FLOTANTE PRO (ZOOM DINÁMICO) --- */
+    #promo-float {
+      position: absolute; right: 30px; top: 400px; z-index: 9999;
+      cursor: pointer; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    nav.desktop a {
-      color: var(--white);
-      text-decoration: none;
-      font-size: 1rem;
-      padding: 0.5rem 0.8rem;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: .2s;
+    #promo-float img { width: 200px; border-radius: 20px; box-shadow: 0 15px 45px rgba(0,0,0,0.5); border: 5px solid white; }
+    
+    #promo-float.expanded {
+      position: fixed !important; top: 50% !important; left: 50% !important;
+      right: auto !important; transform: translate(-50%, -50%) !important;
+      z-index: 10001;
     }
-    nav.desktop a:hover,
-    nav.desktop a:focus-visible {
-      background: var(--dark);
-      outline: none;
+    #promo-float.expanded img {
+      width: 90vw; max-width: 650px;
     }
 
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 5px;
+    .promo-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92); z-index: 10000; backdrop-filter: blur(8px);
     }
-    .hamburger div {
-      width: 25px;
-      height: 3px;
-      background: var(--white);
-      border-radius: 2px;
-    }
+    #promo-float.expanded + .promo-overlay { display: block; }
 
-    .carousel-container {
-      margin-top: 80px;
-      padding: 1rem;
-    }
-    .carousel {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      gap: 1rem;
-      flex-wrap: nowrap;
-    }
-    .carousel img {
-      width: 100%;
-      max-width: 400px;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      scroll-snap-align: center;
-      flex-shrink: 0;
-    }
-
-    .promo-image {
-      margin: 2rem auto;
-      display: flex;
-      justify-content: center;
-      padding: 0 1rem;
-    }
-    .promo-image img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 18px;
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
-    }
-
-    main {
-      max-width: 960px;
-      margin: 2rem auto 5rem;
-      padding: 0 1.5rem;
-    }
-    section {
-      margin-bottom: 4rem;
-    }
-    section h2 {
-      font-size: 2.6rem;
-      color: var(--primary);
-      margin-bottom: 1.4rem;
-      font-weight: 900;
-      border-bottom: 4px solid var(--primary);
-      padding-bottom: 0.4rem;
-    }
-    section p {
-      font-size: 1.2rem;
-      color: #444;
-      line-height: 1.7;
-    }
-    .contact-info a {
-      color: var(--dark);
-      font-weight: 700;
-      font-size: 1.25rem;
-      text-decoration: none;
-    }
-    .contact-info a:hover,
-    .contact-info a:focus-visible {
-      text-decoration: underline;
-    }
-    .qr img {
-      width: 200px;
-      height: 200px;
-      border-radius: 18px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      transition: .3s;
-    }
-    .qr img:hover,
-    .qr img:focus-visible {
-      transform: scale(1.1);
-    }
-
-    footer {
-      background: var(--dark);
-      color: #fff;
-      text-align: center;
-      font-size: 1rem;
-      padding: 1.5rem;
-    }
-
-    html { scroll-padding-top: 70px; }
+    footer { background: var(--dark); color: white; text-align: center; padding: 4rem 1rem; margin-top: 4rem; }
 
     @media (max-width: 768px) {
-      header { font-size: 1.4rem; padding: 1rem; height: 55px; }
-      nav.desktop { display: none; }
-      .hamburger { display: flex; }
-
-      .carousel {
-        flex-direction: column;
-        align-items: center;
-      }
+      .carousel-container { max-width: 95%; }
+      #promo-float img { width: 150px; }
+      #promo-float { top: 350px; right: 15px; }
     }
-  </style>
-</head>
-<body>
-  <header>
-    Antigua Del Sur
-    <nav class="desktop">
-      <a href="#inicio">Inicio</a>
-      <a href="#quienes">Quiénes somos</a>
-      <a href="#contacto">Contacto</a>
-      <a href="#qr">Agregar contacto</a>
-    </nav>
-    <button class="hamburger" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
-      <div></div><div></div><div></div>
-    </button>
-  </header>
-
-  <nav id="mobile-menu" style="display:none; position:fixed; top:60px; left:0; right:0; background:var(--primary); z-index:1000; flex-direction:column; padding:1rem; gap:1rem; text-align:center;">
-    <a href="#inicio" style="color:#fff; font-weight:700; font-size:1.2rem;">Inicio</a>
-    <a href="#quienes" style="color:#fff; font-weight:700; font-size:1.2rem;">Quiénes somos</a>
-    <a href="#contacto" style="color:#fff; font-weight:700; font-size:1.2rem;">Contacto</a>
-    <a href="#qr" style="color:#fff; font-weight:700; font-size:1.2rem;">Agregar contacto</a>
-  </nav>
-
-  <div class="carousel-container" id="inicio">
-    <div class="carousel">
-      <img src="img/1.jpg" alt="Imagen 1">
-      <img src="img/2.jpg" alt="Imagen 2">
-      <img src="img/3.jpg" alt="Imagen 3">
-      <img src="img/4.jpg" alt="Imagen 4">
-    </div>
-  </div>
-
-  <main>
-	<section id="quienes" class="py-5" style="background-color: #fdf4ed;">
-	  <div class="container">
-		<div class="row align-items-center g-5">
-		  
-		  <!-- Texto -->
-		  <div class="col-md-6">
-			<h2 class="fw-bold display-5 text-danger-emphasis">💬 ¿Quiénes Somos?</h2>
-			<p class="lead mt-4 text-dark-emphasis">
-			  En <strong>Antigua Del Sur</strong> fusionamos la pasión por la comida tradicional con el encanto de lo moderno.  
-			  Somos un rincón gastronómico en la <strong>Ciudad de México</strong> donde cada platillo cuenta una historia de sabor, cultura y amor por lo bien hecho.
-			</p>
-			<p class="text-muted">
-			  Nuestra misión es simple: ofrecer <strong>calidad auténtica</strong>, ingredientes <strong>frescos</strong> y una experiencia que querrás repetir una y otra vez.
-			</p>
-			<p class="fw-semibold text-success-emphasis">✨ Sabores del sur con alma latina, listos para conquistar tu paladar.</p>
-		  </div>
-
-		  <!-- Imagen -->
-		  <div class="col-md-6 text-center">
-			<img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?fit=crop&w=600&q=80" 
-				 alt="Antigua Del Sur restaurante" 
-				 class="img-fluid rounded-4 shadow" style="max-height: 350px; object-fit: cover;">
-		  </div>
-
-		</div>
-	  </div>
-	</section>
-
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-
-<section class="container-fluid py-5" style="background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png'); background-color: #fff8e7; background-attachment: fixed; background-size: auto;">
-  <div class="container">
-    <h2 class="text-center mb-5 display-5 fw-bold text-success-emphasis">🌿 Nuestro Menú de Siempre</h2>
-    <div class="row g-4">
-
-      <!-- Empanadas -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card shadow-lg border-0 h-100 rounded-4 bg-light" style="transition: transform 0.3s ease;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">🥟 Empanadas Argentinas</h5>
-            <p class="card-text">Crujientes y doradas al horno, rellenas de sabores auténticos: carne, choclo, queso con tocino, jamón con queso, chistorra o dulce casero.</p>
-            <p><strong>$30</strong> c/u | <strong>$185</strong> (media docena) | <strong>$350</strong> (docena)</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Choripán -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card shadow-lg border-0 h-100 rounded-4 bg-light" style="transition: transform 0.3s ease;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">🌭 Choripán Artesanal</h5>
-            <p class="card-text">Pan artesanal con chorizo argentino asado, chimichurri de la casa y un toque de amor sureño.</p>
-            <p>Tradicional: <strong>$85</strong> | Pan de yuca: <strong>$105</strong></p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cochinita -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card shadow-lg border-0 h-100 rounded-4 bg-light" style="transition: transform 0.3s ease;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">🐖 Cochinita Pibil</h5>
-            <p class="card-text">Receta yucateca de tradición, marinada en achiote y cocida lentamente. Sabor auténtico, jugoso y lleno de historia.</p>
-            <p>Torta: $75 | Sope / Taco: $30<br>1/2 kg: <strong>$185</strong> | 1 kg: <strong>$350</strong></p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Salsas -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card shadow-lg border-0 h-100 rounded-4 bg-light" style="transition: transform 0.3s ease;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">🌶️ Salsas Artesanales</h5>
-            <p class="card-text">Preparadas con ingredientes frescos y amor del sur. Sabores únicos: cacahuate, árbol, habanera, tamarindo, mango, fresa, maracuyá, oliva, guayaba, matcha y chimichurri.</p>
-            <p>Frasco (225ml): <strong>$120</strong></p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Guarniciones -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card shadow-lg border-0 h-100 rounded-4 bg-light" style="transition: transform 0.3s ease;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">🍽️ Guarniciones Caseras</h5>
-            <p class="card-text">Complementos tradicionales hechos con sazón del hogar: frijoles refritos o arroz casero al estilo del sur.</p>
-            <p>Frijoles: <strong>$65</strong> | Arroz: <strong>$65</strong></p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bebidas sin alcohol -->
-      <div class="col-md-6 col-lg-4">
-        <div class="card shadow-lg border-0 h-100 rounded-4 bg-light" style="transition: transform 0.3s ease;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">🧃 Bebidas Sin Alcohol</h5>
-            <p class="card-text">Refrescos bien fríos o aguas frescas naturales con ingredientes de temporada, servidas con estilo casero.</p>
-            <p>Refrescos (600ml): <strong>$35</strong><br>Aguas frescas (500ml): <strong>$30</strong></p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bebidas con alcohol -->
-      <div class="col-md-6 col-lg-6">
-        <div class="card shadow-lg border-0 h-100 rounded-4 bg-light" style="transition: transform 0.3s ease;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">🍻 Bebidas con Alcohol</h5>
-            <p class="card-text">Para compartir buenos momentos: cerveza fría, micheladas, calimocho, tinto de verano o clericó.</p>
-            <p>Cerveza: $30<br>Michelada (1 lt): $85<br>Calimocho / Tinto de verano (1 lt): $99<br>Clericó (2 lt): $189</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Postres -->
-      <div class="col-md-6 col-lg-6">
-        <div class="card shadow-lg border-0 h-100 rounded-4 bg-light" style="transition: transform 0.3s ease;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">🍰 Postres Caseros</h5>
-            <p class="card-text">Dulces tradicionales con corazón del sur: pastel de elote esponjoso o alfajores rellenos de dulce de leche o limón.</p>
-            <p>Pastel de elote: <strong>$45</strong><br>Alfajor: <strong>$75</strong></p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<style>
-  /* Animación suave */
-  .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
-  }
-</style>
-
-
-	<style>
-  .menu-navidad {
-    background: linear-gradient(180deg, #fef9f0, #fff);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-    position: relative;
-    overflow: hidden;
-    font-family: 'Poppins', sans-serif;
-  }
-
-  .menu-navidad h2 {
-    font-size: 3rem;
-    font-weight: 800;
-    color: #1d8f4b;
-    text-shadow: 0 3px 6px rgba(0,0,0,0.15);
-  }
-
-  .menu-navidad h3 {
-    margin-top: 40px;
-    font-size: 1.9rem;
-    font-weight: 700;
-    color: #b30000;
-    border-left: 8px solid #d62828;
-    padding-left: 12px;
-  }
-
-  .menu-navidad ul {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 20px;
-  }
-
-  .menu-navidad ul li {
-    background: #ffffffd8;
-    padding: 14px 18px;
-    margin-bottom: 12px;
-    border-radius: 14px;
-    font-size: 1.15rem;
-    font-weight: 500;
-    color: #333;
-    border: 1px solid #f1e1d1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .menu-navidad ul li:hover {
-    background: #fff7e6;
-    transform: translateX(6px);
-    transition: 0.2s;
-  }
-
-  /* Íconos */
-  .icon {
-    font-size: 1.4rem;
-  }
-
-  .platillos { color: #c1121f; }
-  .pastas { color: #8b5cf6; }
-  .guarn { color: #ff8800; }
-  .postres { color: #dc0073; }
-  .bebidas { color: #1e88e5; }
-
-  /* Decoración navideña */
-  .navidad-deco {
-    position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 180px;
-    opacity: 0.9;
-  }
-
-  .navidad-bolas {
-    position: absolute;
-    bottom: -20px;
-    left: -20px;
-    width: 160px;
-    opacity: 0.9;
-  }
-
-  .nota-navidad {
-    margin-top: 40px;
-    background: #fff3cd;
-    padding: 20px;
-    border-radius: 14px;
-    font-size: 1.1rem;
-    border-left: 6px solid #f0ad4e;
-  }
-</style>
-
-<section class="menu-navidad container py-5">
-
-  <img src="img/7.jpg" class="navidad-deco">
-  <img src="img/8.jpg" class="navidad-bolas">
-
-  <h2 class="text-center mb-5">🎄 Menú de Noviembre y Diciembre</h2>
-
-  <!-- PLATILLOS -->
-  <h3>🍽️ Platillo Principal</h3>
-  <ul>
-    <li><span class="icon platillos">🐟</span> <strong>1 kg Bacalao</strong> – $999</li>
-    <li><span class="icon platillos">🥩</span> <strong>Lomo 3 chiles a la crema con chipotle y champiñones o al tamarindo con pasilla (5 kg)</strong> – $2100</li>
-    <li><span class="icon platillos">🍖</span> <strong>Pechos de puerco al BBQ, pasilla, pibil o 3 chiles (5 kg)</strong> – $2200</li>
-    <li><span class="icon platillos">🍝</span> <strong>Lasaña vegetariana, al pibil o carne (8 personas)</strong> – $1200</li>
-    <li><span class="icon platillos">🍗</span> <strong>Pechugas en trozo empanizado con tocino al BBQ o a la poblana con elote (6 piezas)</strong> – $680</li>
-    <li><span class="icon platillos">🔥</span> <strong>1.3 kg Picaña a las hierbas y un toque dulce</strong> – $1100</li>
-    <li><span class="icon platillos">🐖</span> <strong>1 kg Cochinita Pibil</strong> (incluye tortillas, cebolla morada y salsa de habanero) – $370</li>
-    <li><span class="icon platillos">🥟</span> <strong>Empanadas Argentinas (12 piezas)</strong>: carne, choclo, tocino, queso, cochinita y dulce a la antigua (incluye chimichurri y salsa habanero) – $380</li>
-  </ul>
-
-  <!-- PASTAS -->
-  <h3>🍝 Pastas y Cremas</h3>
-  <ul>
-    <li><span class="icon pastas">🥣</span> <strong>1 L Crema papa al chipotle</strong> – $150</li>
-    <li><span class="icon pastas">🥣</span> <strong>1 L Crema frijol con tocino</strong> – $150</li>
-    <li><span class="icon pastas">🍝</span> <strong>1 kg Pasta a la Philadelphia con champiñones</strong> – $165</li>
-    <li><span class="icon pastas">🍝</span> <strong>1 kg Pasta a la Bolognesa</strong> – $185</li>
-    <li><span class="icon pastas">🍝</span> <strong>1 kg Pasta a la Marinara con morrón y parmesano</strong> – $165</li>
-  </ul>
-
-  <!-- GUARNICIONES -->
-  <h3>🍟 Guarniciones</h3>
-  <ul>
-    <li><span class="icon guarn">🥔</span> <strong>1 kg Papas cambray a la crema con chipotle</strong> – $165</li>
-    <li><span class="icon guarn">🥗</span> <strong>Charola de ensalada mixta con nuez y frutos rojos y queso panela con aderezo miel y mostaza (6 personas)</strong> – $750</li>
-    <li><span class="icon guarn">🌶️</span> <strong>1 L Frijoles charros</strong> – $165</li>
-  </ul>
-
-  <!-- POSTRES -->
-  <h3>🍰 Postres</h3>
-  <ul>
-    <li><span class="icon postres">🍎</span> <strong>Charola de ensalada de manzana con nuez castilla y durazno (6 personas)</strong> – $720</li>
-    <li><span class="icon postres">🥕</span> <strong>Charola de ensalada de zanahoria con pasitas y durazno a la crema (6 personas)</strong> – $650</li>
-  </ul>
-
-  <!-- BEBIDAS -->
-  <h3>🍷 Bebidas</h3>
-  <ul>
-    <li><span class="icon bebidas">🍷</span> <strong>1 L Calimocho</strong> – $120</li>
-    <li><span class="icon bebidas">🍷</span> <strong>1 L Tinto de verano</strong> – $120</li>
-    <li><span class="icon bebidas">🍹</span> <strong>Jarra Clericot (3 L)</strong> – $650</li>
-  </ul>
-
-  <!-- NOTA -->
-  <div class="nota-navidad">
-    <strong>📌 Nota:</strong> Todos los pedidos requieren <strong>7 días de anticipación</strong>.
-  </div>
-
-</section>
-
-
-	<section id="contacto" class="py-5 bg-light">
-	  <div class="container text-center">
-		<div class="card border-0 shadow-lg p-4 mx-auto" style="max-width: 600px;">
-		  <h2 class="fw-bold text-primary mb-3">📞 ¡Contáctanos Hoy!</h2>
-		  <p class="lead text-dark-emphasis">Haz tu pedido o cotiza tu evento, estamos para servirte.</p>
-
-		  <!-- Botón de llamada -->
-		  <a href="tel:+525544910133" class="btn btn-success btn-lg mb-3">
-			📲 Llamar al +52 55 4491 0133
-		  </a>
-
-		  <!-- Botón de WhatsApp -->
-		  <a href="https://wa.me/525544910133?text=Hola%20me%20interesa%20hacer%20un%20pedido%20en%20Antigua%20Del%20Sur" 
-			 class="btn btn-outline-success btn-lg mb-3" target="_blank">
-			💬 Escríbenos por WhatsApp
-		  </a>
-
-		  <!-- Redes sociales -->
-		  <div class="mt-4">
-			<p class="fw-semibold">Síguenos en redes:</p>
-			<a href="https://www.instagram.com/antiguadelsur" target="_blank" class="me-3 text-danger fs-4">
-			  <i class="bi bi-instagram"></i> Instagram
-			</a>
-			<a href="https://www.facebook.com/antiguadelsur" target="_blank" class="me-3 text-primary fs-4">
-			  <i class="bi bi-facebook"></i> Facebook
-			</a>
-			<a href="mailto:contacto@antiguadelsur.com" class="fs-5">
-			  📧 contacto@antiguadelsur.com
-			</a>
-		  </div>
-
-		  <!-- Horario -->
-		  <p class="text-muted mt-4">🕐 Horario: Lunes a Domingo | 12:00 PM – 10:00 PM</p>
-		</div>
-
-
-<div class="mt-5">
-  <!-- Mapa de Google -->
-  <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
-    <!-- Dirección -->
-    <div style="padding: 16px; background-color: #f5f5f5; border-radius: 12px 12px 0 0; text-align: center;">
-      <h2 style="margin: 0; font-size: 18px; color: #333;">Antigua Del Sur</h2>
-      <p style="margin: 4px 0 0 0; font-size: 14px; color: #555;">
-        Insurgentes Sur 3493<br>
-        Ciudad de México
-      </p>
-    </div>
-
-    <!-- Mapa -->
-    <iframe
-      src="https://www.google.com/maps?q=Insurgentes+Sur+3493+Ciudad+de+México&hl=es&z=18&output=embed"
-      width="100%"
-      height="400"
-      style="border:0; border-radius:0 0 12px 12px;"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-  </div>
-</div>
-
-	</section>
-
-
-	<section id="qr" class="py-5" >
-	  <div class="container text-center">
-		<div class="card shadow-lg border-0 mx-auto" style="max-width: 400px;">
-		  <div class="card-body">
-			<p class="card-text">Escanea el código para aplicar a nuestras promociones:</p>
-			<img 
-			  src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3AAntigua%20Del%20Sur%0ATEL%3BTYPE%3DCELL%3A%2B525544910133%0AEND%3AVCARD" 
-			  alt="QR para agregar contacto Antigua Del Sur"
-			  class="img-fluid my-3"
-			  style="width: 200px; height: 200px;">
-		  </div>
-		</div>
-	  </div>
-	</section>
-
-  </main>
-
-
-
-  <footer>
-    &copy; 2025 Antigua Del Sur
-  </footer>
-
-  <script>
-    const btn = document.getElementById('hamburgerBtn');
-    const menu = document.getElementById('mobile-menu');
-    btn.addEventListener('click', () => {
-      const exp = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!exp));
-      menu.style.display = exp ? 'none' : 'flex';
-    });
-    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      menu.style.display = 'none';
-      btn.setAttribute('aria-expanded', 'false');
-    }));
-  </script>
-  
-<style>
-  #promo-float {
-    position: absolute;
-    right: 20px;
-    top: 300px;
-    z-index: 9999;
-    transition: top 0.4s ease-in-out;
-    cursor: pointer;
-    display: block;
-  }
-
-  #promo-float img {
-    width: 180px;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
-  }
-
-  #promo-float.expanded img {
-    transform: scale(2);
-    z-index: 10000;
-  }
-
-  #promo-float .promo-text {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-    font-size: 1.1rem;
-    text-shadow: 2px 2px 6px black;
-    pointer-events: none;
-  }
-
-  /* ✅ Responsive para celulares y tablets */
-  @media (max-width: 768px) {
-    #promo-float {
-      position: fixed !important;
-      top: auto !important;
-      bottom: 10px !important;
-      left: 50% !important;
-      right: auto !important;
-      transform: translateX(-50%);
-    }
-
-    #promo-float img {
-      width: 140px;
-    }
-
-    #promo-float.expanded img {
-      transform: scale(2.2);
-    }
-
-    #promo-float .promo-text {
-      font-size: 0.9rem;
-    }
-  }
-</style>
-
-<div id="promo-float">
-  <div style="position: relative;">
-    <img src="img/6.jpg" alt="Promo especial">
-    <div class="promo-text">¡Julio, agosto y septiembre!</div>
-  </div>
-</div>
-
-<script>
-const promoFloat = document.getElementById('promo-float');
-
-function updateFloatPosition() {
-  const windowWidth = window.innerWidth;
-  const scrollY = window.scrollY;
-  const promoHeight = promoFloat.offsetHeight;
-  const bodyHeight = document.body.scrollHeight;
-  const footerOffset = 120; // ⚡ distancia mínima respecto al footer (ajústala si quieres más)
-
-  if (windowWidth > 768) {
-    // Desktop / Tablet
-    let topPosition = scrollY + 200; // un poco más arriba
-    const maxY = bodyHeight - promoHeight - footerOffset; // nunca sobrepasa el footer
-    promoFloat.style.position = 'absolute';
-    promoFloat.style.top = Math.min(topPosition, maxY) + 'px';
-    promoFloat.style.right = '60px'; // desplazado hacia la derecha
-    promoFloat.style.left = 'auto';
-    promoFloat.style.bottom = 'auto';
-    promoFloat.style.transform = 'none';
-  } else {
-    // Mobile: fijo, más arriba del footer
-    promoFloat.style.position = 'fixed';
-
-    // Altura disponible hasta el footer
-    const maxVisibleY = bodyHeight - footerOffset - promoHeight;
-    const currentBottom = 80; // margen fijo arriba del borde inferior
-    let bottomPosition = currentBottom;
-
-    // Si el scroll llega al final, mantenemos el flotante arriba del footer
-    if (scrollY + window.innerHeight > maxVisibleY) {
-      bottomPosition = (scrollY + window.innerHeight) - maxVisibleY + currentBottom;
-    }
-
-    promoFloat.style.bottom = bottomPosition + 'px';
-
-    // Ligeramente a la derecha (viéndolo de frente)
-    promoFloat.style.left = '55%';
-    promoFloat.style.right = 'auto';
-    promoFloat.style.top = 'auto';
-    promoFloat.style.transform = 'translateX(-50%)';
-    promoFloat.style.maxWidth = '90%';
-    promoFloat.style.boxSizing = 'border-box';
+	/* Esto ajusta el tamaño solo en computadoras */
+/* Ajuste de escala universal */
+html, body {
+  overflow-x: hidden; /* Evita que la página baile de lado a lado */
+}
+
+/* En Computadoras / Laptops */
+@media (min-width: 1024px) {
+  body {
+    zoom: 0.75; 
   }
 }
 
-// Ampliar imagen al clic
-promoFloat.addEventListener('click', () => {
-  promoFloat.classList.toggle('expanded');
-});
+/* En Tablets y Celulares (iPhone, Android) */
+@media (max-width: 1023px) {
+  body {
+    zoom: 0.85; /* En móviles no conviene bajar al 70% porque la letra queda minúscula */
+  }
+}
+  </style>
+</head>
+<body>
 
-// Recalcular posición al scroll, resize o load
-window.addEventListener('scroll', updateFloatPosition);
-window.addEventListener('resize', updateFloatPosition);
-window.addEventListener('load', updateFloatPosition);
+  <header>
+    Antigua Del Sur
+    <nav class="desktop">
+      <a href="#quienes">Quiénes somos</a>
+      <a href="#menu-seccion">Menú</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
 
-</script>
+  <section id="quienes" class="quienes-section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-md-7">
+          <h2 class="display-4 fw-bold text-danger">💬 ¿Quiénes Somos?</h2>
+          <p class="lead mt-4 text-dark-emphasis">
+            En <strong>Antigua Del Sur</strong> fusionamos la pasión por la comida tradicional con el encanto de lo moderno.  
+            Somos un rincón gastronómico en la <strong>CDMX</strong> donde cada platillo cuenta una historia de sabor, cultura y amor por lo bien hecho.
+          </p>
+          <p class="text-muted" style="font-size: 1.1rem;">
+            Nuestra misión es ofrecer <strong>calidad auténtica</strong>, ingredientes frescos y una experiencia que querrás repetir una y otra vez.
+          </p>
+          <p class="fw-bold text-success" style="font-size: 1.2rem;">✨ Sabores del sur con alma latina, listos para conquistar tu paladar.</p>
+        </div>
+        <div class="col-md-5 text-center">
+          <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?fit=crop&w=600&q=80" class="img-quienes-chic" alt="Antigua Del Sur">
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <div class="carousel-container">
+    <div id="proCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="3000"><img src="img/1.jpg" class="d-block w-100" alt="1"></div>
+        <div class="carousel-item" data-bs-interval="3000"><img src="img/2.jpg" class="d-block w-100" alt="2"></div>
+        <div class="carousel-item" data-bs-interval="3000"><img src="img/3.jpg" class="d-block w-100" alt="3"></div>
+        <div class="carousel-item" data-bs-interval="3000"><img src="img/4.jpg" class="d-block w-100" alt="4"></div>
+      </div>
+    </div>
+  </div>
 
+  <main class="container">
+    
+    <section class="py-5">
+      <h2 class="text-center fw-900 text-danger mb-5" style="font-weight:900; font-size: 2.5rem;">⭐ Paquetes de Especialidad</h2>
+      <div class="row justify-content-center">
+        <div class="col-lg-11">
+          <div class="package-card">
+            <div>
+              <h4 class="fw-bold mb-1">Paquete Individual Empanadas</h4>
+              <p class="mb-0">4 Empanadas Argentinas a elección + 1 L de Agua del día</p>
+            </div>
+            <span class="price-tag">$126</span>
+          </div>
+          <div class="package-card">
+            <div>
+              <h4 class="fw-bold mb-1">Docena de Empanadas</h4>
+              <p class="mb-0">12 Empanadas Argentinas Surtidas (Ideales para compartir)</p>
+            </div>
+            <span class="price-tag">$376</span>
+          </div>
+          <div class="package-card">
+            <div>
+              <h4 class="fw-bold mb-1">Paquete Choripán</h4>
+              <p class="mb-0">1 Choripán Tradicional con Papas + 1 L de Agua del día</p>
+            </div>
+            <span class="price-tag">$126</span>
+          </div>
+          <div class="package-card">
+            <div>
+              <h4 class="fw-bold mb-1">Dúo de Tortas Cochinita</h4>
+              <p class="mb-0">2 Tortas de Cochinita Pibil + 1 L de Agua del día</p>
+            </div>
+            <span class="price-tag">$136</span>
+          </div>
+          <div class="package-card">
+            <div>
+              <h4 class="fw-bold mb-1">Kilo de Cochinita Pibil</h4>
+              <p class="mb-0">Incluye tortillas, cebolla morada y salsa habanera</p>
+            </div>
+            <span class="price-tag">$386</span>
+          </div>
+          <div class="package-card">
+            <div>
+              <h4 class="fw-bold mb-1">Chamorros al Pibil</h4>
+              <p class="mb-0">2 piezas de Chamorro preparados con receta tradicional</p>
+            </div>
+            <span class="price-tag">$176</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu-seccion" class="py-5">
+      <div class="accordion shadow-lg" id="menuMain">
+        
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSiempre">
+              🌿 Nuestro Menú de Siempre (Todo el año)
+            </button>
+          </h2>
+          <div id="collapseSiempre" class="accordion-collapse collapse" data-bs-parent="#menuMain">
+            <div class="accordion-body">
+              <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                  <h5 class="fw-bold text-danger">🥟 Empanadas Argentinas</h5>
+                  <p class="text-muted">Carne, choclo, queso con tocino, jamón con queso, chistorra o dulce casero.</p>
+                  <p class="fw-bold">Una: $30 | Media Docena: $185 | Docena: $350</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <h5 class="fw-bold text-danger">🌭 Choripán Artesanal</h5>
+                  <p class="text-muted">Pan artesanal con chorizo argentino asado y chimichurri.</p>
+                  <p class="fw-bold">Tradicional: $85 | Pan de yuca: $105</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <h5 class="fw-bold text-danger">🐖 Cochinita Pibil</h5>
+                  <p class="text-muted">Receta auténtica yucateca.</p>
+                  <p class="fw-bold">Torta: $75 | Taco: $30 | 1/2 kg: $185 | 1 kg: $350</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <h5 class="fw-bold text-danger">🌶️ Salsas Artesanales (225ml)</h5>
+                  <p class="text-muted">Cacahuate, Árbol, Habanera, Tamarindo, Mango, Fresa, Maracuyá, Matcha y Chimichurri.</p>
+                  <p class="fw-bold">Cualquier sabor: $120</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <h5 class="fw-bold text-danger">🍽️ Guarniciones</h5>
+                  <p class="text-muted">Frijoles refritos o arroz casero.</p>
+                  <p class="fw-bold">Porción: $65</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <h5 class="fw-bold text-danger">🍻 Bebidas con Alcohol</h5>
+                  <p class="text-muted">Cerveza: $30 | Michelada: $85 | Calimocho: $99 | Clericó (2L): $189</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <h5 class="fw-bold text-danger">🍰 Postres Caseros</h5>
+                  <p class="text-muted">Pastel de elote: $45 | Alfajor relleno: $75</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNavidad">
+              🌿 Especialidades (Todo el año)
+            </button>
+          </h2>
+          <div id="collapseNavidad" class="accordion-collapse collapse" data-bs-parent="#menuMain">
+            <div class="accordion-body menu-navidad bg-light">
+              
+              <h3>🍽️ Platillo Principal</h3>
+              <ul class="navidad-list">
+                <li><span>🐟 1 kg Bacalao a la Vizcaína</span> <strong>$999</strong></li>
+                <li><span>🥩 Lomo 3 chiles o tamarindo (5 kg)</span> <strong>$2100</strong></li>
+                <li><span>🍖 Pechos de puerco BBQ, pibil o 3 chiles (5 kg)</span> <strong>$2200</strong></li>
+                <li><span>🍝 Lasaña (Carne, Pibil o Vegetariana) 8 pers.</span> <strong>$1200</strong></li>
+                <li><span>🍗 Pechugas empanizadas rellenas c/tocino (6 pzs)</span> <strong>$680</strong></li>
+                <li><span>🔥 1.3 kg Picaña a las finas hierbas</span> <strong>$1100</strong></li>
+                <li><span>🐖 1 kg Cochinita Pibil Especial</span> <strong>$370</strong></li>
+                <li><span>🥟 Docena Empanadas Argentinas Navideñas</span> <strong>$380</strong></li>
+              </ul>
+
+              <h3>🍝 Pastas y Cremas</h3>
+              <ul class="navidad-list">
+                <li><span>🥣 1 L Crema de papa al chipotle o frijol</span> <strong>$150</strong></li>
+                <li><span>🍝 1 kg Pasta Philadelphia o Marinara</span> <strong>$165</strong></li>
+                <li><span>🍝 1 kg Pasta a la Bolognesa</span> <strong>$185</strong></li>
+              </ul>
+
+              <h3>🍰 Postres y Guarniciones Navideñas</h3>
+              <ul class="navidad-list">
+                <li><span>🍎 Ensalada Manzana Especial (6 pers)</span> <strong>$720</strong></li>
+                <li><span>🥕 Ensalada Zanahoria Especial (6 pers)</span> <strong>$650</strong></li>
+                <li><span>🥔 1 kg Papas cambray a la crema</span> <strong>$165</strong></li>
+                <li><span>🥗 Ensalada Mixta de la Casa (6 pers)</span> <strong>$750</strong></li>
+              </ul>
+
+              <h3>🍷 Bebidas de Temporada</h3>
+              <ul class="navidad-list">
+                <li><span>🍷 1 L Calimocho o Tinto de Verano</span> <strong>$120</strong></li>
+                <li><span>🍹 Jarra de Clericot Especial (3 L)</span> <strong>$650</strong></li>
+              </ul>
+
+              <div class="alert alert-danger mt-4 shadow-sm">
+                <strong>📌 AVISO IMPORTANTE:</strong> Todos los pedidos de temporada navideña requieren un mínimo de <strong>7 días de anticipación</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="py-5">
+      <div class="row g-4 text-center">
+        <div class="col-md-6">
+          <div class="card p-5 shadow-sm border-0 h-100">
+            <h2 class="text-danger fw-bold mb-4">📞 ¡Contáctanos!</h2>
+            <a href="tel:+525544910133" class="btn btn-success btn-lg w-100 mb-4 py-3 fw-bold">📲 Llamar al +52 55 4491 0133</a>
+            <a href="https://wa.me/525544910133" class="btn btn-outline-success btn-lg w-100 py-3 fw-bold">💬 WhatsApp Directo</a>
+            <p class="mt-4 text-muted">Horario: Lunes a Domingo | 12:00 PM – 10:00 PM</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card p-4 shadow-sm border-0">
+            <h2 class="text-primary fw-bold mb-3">📍 Ubicación</h2>
+            <p class="mb-3">Insurgentes Sur 3493, Ciudad de México</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3765.132145610078!2d-99.183286!3d19.280977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ce00732860a4e7%3A0x19a0077c570f7229!2sAv.%20Insurgentes%20Sur%203493%2C%20Pe%C3%B1a%20Pobre%2C%20Tlalpan%2C%2014060%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX!5e0!3m2!1ses-419!2smx!4v1700000000000" width="100%" height="300" style="border:0; border-radius:15px;" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-5">
+        <div class="card d-inline-block p-4 shadow-lg border-0 bg-white">
+          <p class="fw-bold mb-3">Escanea para guardarnos en tus contactos:</p>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3AAntigua%20Del%20Sur%0ATEL%3BTYPE%3DCELL%3A%2B525544910133%0AEND%3AVCARD" alt="QR Contacto" width="200">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="promo-float">
+    <div style="position: relative;">
+      <img src="img/6.jpg" alt="Promoción Temporada">
+      <div style="position: absolute; bottom: 10px; left:0; right:0; text-align:center; color:white; font-weight:bold; text-shadow: 2px 2px 5px #000; font-size: 0.9rem;">¡Toca para ver promo!</div>
+    </div>
+  </div>
+  <div class="promo-overlay"></div>
+
+  <footer>
+    <h2 class="fw-900 mb-2">Antigua Del Sur</h2>
+    <p class="mb-0">© 2026 Todos los derechos reservados.</p>
+    <p class="small opacity-75">Tradición y sabor en cada bocado.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const promoBox = document.getElementById('promo-float');
+    const overlay = document.querySelector('.promo-overlay');
+
+    // Función Zoom al Centro
+    promoBox.addEventListener('click', () => {
+      promoBox.classList.toggle('expanded');
+    });
+
+    // Cerrar al tocar el fondo
+    overlay.addEventListener('click', () => {
+      promoBox.classList.remove('expanded');
+    });
+
+    // Lógica de posición flotante (Scroll)
+    window.addEventListener('scroll', () => {
+      if (window.innerWidth > 768 && !promoBox.classList.contains('expanded')) {
+        let scrollY = window.scrollY;
+        promoBox.style.top = (scrollY + 400) + 'px';
+      }
+    });
+  </script>
 
 </body>
 </html>
