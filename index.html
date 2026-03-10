@@ -75,6 +75,55 @@
     #promo-float.expanded img {
       width: 90vw; max-width: 650px;
     }
+	
+	/* ===== ARREGLO IMAGEN IZQUIERDA ===== */
+
+#promo-float-left{
+  position:absolute;
+  left:30px;
+  top:400px;
+  z-index:9999;
+  cursor:pointer;
+  transition:all .5s cubic-bezier(.175,.885,.32,1.275);
+}
+
+#promo-float-left img{
+  width:200px;
+  border-radius:20px;
+  box-shadow:0 15px 45px rgba(0,0,0,.5);
+  border:5px solid white;
+}
+
+/* EXPAND IGUAL QUE LA DERECHA */
+
+#promo-float-left.expanded{
+  position:fixed!important;
+  top:50%!important;
+  left:50%!important;
+  right:auto!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:10001;
+}
+
+#promo-float-left.expanded img{
+  width:90vw;
+  max-width:650px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+  #promo-float-left img{
+    width:150px;
+  }
+
+  #promo-float-left{
+    top:350px;
+    left:15px;
+  }
+
+}
 
     .promo-overlay {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -363,6 +412,16 @@ html, body {
       <div style="position: absolute; bottom: 10px; left:0; right:0; text-align:center; color:white; font-weight:bold; text-shadow: 2px 2px 5px #000; font-size: 0.9rem;">¡Toca para ver promo!</div>
     </div>
   </div>
+  
+  <div id="promo-float-left">
+	<div style="position:relative;">
+	<img src="img/6--.jpg">
+	<div style="position:absolute;bottom:10px;left:0;right:0;text-align:center;color:white;font-weight:bold;text-shadow:2px 2px 5px #000;font-size:.9rem;">
+	¡Toca para ver promo!
+	</div>
+	</div>
+  </div>
+
   <div class="promo-overlay"></div>
 
   <footer>
@@ -372,28 +431,51 @@ html, body {
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const promoBox = document.getElementById('promo-float');
-    const overlay = document.querySelector('.promo-overlay');
 
-    // Función Zoom al Centro
-    promoBox.addEventListener('click', () => {
-      promoBox.classList.toggle('expanded');
-    });
 
-    // Cerrar al tocar el fondo
-    overlay.addEventListener('click', () => {
-      promoBox.classList.remove('expanded');
-    });
+<script>
+const promoBox = document.getElementById('promo-float');
+const promoBoxLeft = document.getElementById('promo-float-left');
+const overlay = document.querySelector('.promo-overlay');
 
-    // Lógica de posición flotante (Scroll)
-    window.addEventListener('scroll', () => {
-      if (window.innerWidth > 768 && !promoBox.classList.contains('expanded')) {
-        let scrollY = window.scrollY;
-        promoBox.style.top = (scrollY + 400) + 'px';
-      }
-    });
-  </script>
+/* FUNCION ZOOM */
+function togglePromo(box){
+  box.classList.toggle('expanded');
+  overlay.style.display = box.classList.contains('expanded') ? 'block' : 'none';
+}
+
+/* CLICK DERECHA */
+promoBox.addEventListener('click', () => {
+  togglePromo(promoBox);
+});
+
+/* CLICK IZQUIERDA */
+promoBoxLeft.addEventListener('click', () => {
+  togglePromo(promoBoxLeft);
+});
+
+/* CERRAR OVERLAY */
+overlay.addEventListener('click', () => {
+  promoBox.classList.remove('expanded');
+  promoBoxLeft.classList.remove('expanded');
+  overlay.style.display = 'none';
+});
+
+/* MOVIMIENTO CON SCROLL */
+window.addEventListener('scroll', () => {
+
+  if (window.innerWidth > 768 && !promoBox.classList.contains('expanded')) {
+    let scrollY = window.scrollY;
+    promoBox.style.top = (scrollY + 400) + 'px';
+  }
+
+  if (window.innerWidth > 768 && !promoBoxLeft.classList.contains('expanded')) {
+    let scrollY = window.scrollY;
+    promoBoxLeft.style.top = (scrollY + 400) + 'px';
+  }
+
+});
+</script>
 
 </body>
 </html>
