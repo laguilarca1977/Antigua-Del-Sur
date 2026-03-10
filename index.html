@@ -464,13 +464,13 @@ overlay.addEventListener('click', () => {
 /* MOVIMIENTO CON SCROLL */
 window.addEventListener('scroll', () => {
 
-  if (window.innerWidth > 768 && !promoBox.classList.contains('expanded')) {
-    let scrollY = window.scrollY;
+  let scrollY = window.scrollY;
+
+  if (!promoBox.classList.contains('expanded')) {
     promoBox.style.top = (scrollY + 400) + 'px';
   }
 
-  if (window.innerWidth > 768 && !promoBoxLeft.classList.contains('expanded')) {
-    let scrollY = window.scrollY;
+  if (!promoBoxLeft.classList.contains('expanded')) {
     promoBoxLeft.style.top = (scrollY + 400) + 'px';
   }
 
